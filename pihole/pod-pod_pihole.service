@@ -1,0 +1,38 @@
+[Unit]
+Description=Podman pod-pod_pihole.service
+Documentation=man:podman-generate-systemd(1)
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=/run/containers/storage
+Wants=cnt_pihole.service cnt_unbound.service
+Before=cnt_pihole.service cnt_unbound.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/usr/bin/podman pod create \
+        --infra-conmon-pidfile %t/pod-pod_pihole.pid \
+        --pod-id-file %t/pod-pod_pihole.pod-id \
+        --exit-policy=stop \
+        --name=pod_pihole \
+        -p=192.168.1.254:8080:80/tcp \
+        -p=192.168.1.254:8443:443/tcp \
+        -p=192.168.1.254:53:53/tcp \
+        -p=192.168.1.254:53:53/udp \
+        --replace
+ExecStart=/usr/bin/podman pod start \
+        --pod-id-file %t/pod-pod_pihole.pod-id
+ExecStop=/usr/bin/podman pod stop \
+        --ignore \
+        --pod-id-file %t/pod-pod_pihole.pod-id  \
+        -t 10
+ExecStopPost=/usr/bin/podman pod rm \
+        --ignore \
+        -f \
+        --pod-id-file %t/pod-pod_pihole.pod-id
+PIDFile=%t/pod-pod_pihole.pid
+Type=forking
+
+[Install]
+WantedBy=default.target

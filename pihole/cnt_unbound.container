@@ -1,0 +1,22 @@
+[Unit]
+Description=Unbound Container
+BindsTo=pod-pod_pihole.service
+After=pod-pod_pihole.service
+Before=cnt_pihole.service
+
+[Container]
+ContainerName=cnt_unbound
+Image=docker.io/madnuttah/unbound:latest
+AutoUpdate=registry
+PodmanArgs=--pod=pod_pihole
+PodmanArgs=--memory=500000k
+Environment=TZ=Europe/Berlin
+Volume=/srv/pod-pihole/unbound/unbound.conf:/usr/local/unbound/unbound.conf:Z
+Volume=/srv/pod-pihole/unbound/conf.d/:/usr/local/unbound/conf.d/:Z
+Volume=/srv/pod-pihole/unbound/log.d/unbound.log:/usr/local/unbound/log.d/unbound.log:Z
+Volume=/srv/pod-pihole/unbound/zones.d/:/usr/local/unbound/zones.d/:Z
+Volume=/srv/pod-pihole/unbound/iana.d/:/usr/local/unbound/iana.d/:Z
+HealthCmd=/usr/local/unbound/sbin/healthcheck.sh
+
+[Install]
+WantedBy=multi-user.target
