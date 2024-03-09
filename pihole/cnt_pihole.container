@@ -14,8 +14,8 @@ Environment=WEBPASSWORD=**************
 Environment=PIHOLE_DNS_=127.0.0.1#5335
 Environment=CUSTOM_CACHE_SIZE=0
 AddCapability=CAP_AUDIT_WRITE
-Volume=/srv/pod-pihole/pihole/pihole/etc-pihole/:/etc/pihole/:Z
-Volume=/srv/pod-pihole/pihole/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/:Z
+Volume=/srv/pod-pihole/pihole/etc-pihole/:/etc/pihole/:Z
+Volume=/srv/pod-pihole/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/:Z
 
 [Install]
 WantedBy=multi-user.target
