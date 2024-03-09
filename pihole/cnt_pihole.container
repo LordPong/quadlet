@@ -2,13 +2,13 @@
 Description=Pihole Container
 BindsTo=pod-pod_pihole.service
 After=pod-pod_pihole.service
+After=cnt_unbound.service
 
 [Container]
 ContainerName=cnt_pihole
 Image=docker.io/pihole/pihole:latest
 AutoUpdate=registry
 PodmanArgs=--pod=pod_pihole
-PodmanArgs=--restart=on-failure:5
 Environment=TZ=Europe/Berlin
 Environment=WEBPASSWORD=**************
 Environment=PIHOLE_DNS_=127.0.0.1#5335
@@ -16,9 +16,6 @@ Environment=CUSTOM_CACHE_SIZE=0
 AddCapability=CAP_AUDIT_WRITE
 Volume=/srv/pod-pihole/pihole/pihole/etc-pihole/:/etc/pihole/:Z
 Volume=/srv/pod-pihole/pihole/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/:Z
-
-[Service]
-ExecStartPre=pod-pod_pihole.service
 
 [Install]
 WantedBy=multi-user.target
