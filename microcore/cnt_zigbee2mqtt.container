@@ -1,0 +1,20 @@
+[Unit]
+Description=Zigbee2MQTT Container
+
+[Container]
+ContainerName=zigbee2mqtt
+Image=docker.io/koenkk/zigbee2mqtt:latest
+AutoUpdate=registry
+Environment=TZ=Europe/Berlin
+PublishPort=8080:8080
+Volume=%h/zigbee2mqtt/data:/app/data:Z
+Volume=/run/udev:/run/udev:ro
+AddDevice=/dev/ttyUSB0
+PodmanArgs=--group-add keep-groups
+SecurityLabelDisable=true
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
