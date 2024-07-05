@@ -16,6 +16,8 @@ Environment=CUSTOM_CACHE_SIZE=0
 AddCapability=CAP_AUDIT_WRITE
 Volume=/srv/pod-pihole/pihole/etc-pihole/:/etc/pihole/:Z
 Volume=/srv/pod-pihole/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/:Z
+Volume=/srv/pod-pihole/pihole/external.conf:/etc/lighttpd/conf-enabled/external.conf:Z
+Volume=/srv/pod-pihole/pihole/pihole.pem:/etc/lighttpd/combined.pem:Z
 
 [Install]
 WantedBy=multi-user.target
